@@ -24,24 +24,23 @@ const playMusic = new Audio('/sons/play.wav');
 const pauseMusic = new Audio('/sons/pause.mp3');
 const finishedMusic = new Audio('/sons/beep.mp3');
 
-const duracaoFoco = 1500;
-const duracaoDescansoCurto = 300;
-const duracaoDescansoLongo = 900;
-
-let tempoDecorridoEmSegundos = 5;
+let elapsedTimeInSeconds = 1500;
 let intervalId = null;
 
 focoBt.addEventListener('click', () => {
+  elapsedTimeInSeconds = 1500;
   changeContexto('foco');
   focoBt.classList.add('active');
 });
 
 curtoBt.addEventListener('click', () => {
+  elapsedTimeInSeconds = 300;
   changeContexto('descanso-curto');
   curtoBt.classList.add('active');
 });
 
 longoBt.addEventListener('click', () => {
+  elapsedTimeInSeconds = 900;
   changeContexto('descanso-longo');
   longoBt.classList.add('active');
 });
@@ -55,6 +54,7 @@ musicFocoInput.addEventListener('change', () => {
 });
 
 function changeContexto(contexto) {
+  showTimer();
   html.setAttribute('data-contexto', contexto);
   image.setAttribute('src', `/imagens/${contexto}.png`);
   buttons.forEach(function (bt) { 
@@ -77,14 +77,15 @@ function changeContexto(contexto) {
 }
 
 const contagemRegressiva = () => {
-  if (tempoDecorridoEmSegundos <= 0) {
+  if (elapsedTimeInSeconds <= 0) {
     finishedMusic.play();
     alert('Tempo finalizado!');
     reset();
     return;
   }
 
-  tempoDecorridoEmSegundos -= 1;
+  elapsedTimeInSeconds -= 1;
+  showTimer();
 }
 
 startPauseBt.addEventListener('click', startOrPause);
@@ -109,3 +110,15 @@ function reset() {
   startOrPauseImg.setAttribute('src', '/imagens/play_arrow.png');
   intervalId = null;
 }
+
+function showTimer() {
+  const time = new Date(elapsedTimeInSeconds * 1000);
+  const timeFormated = time.toLocaleTimeString('pt-Br', {
+    minute: '2-digit',
+    second: '2-digit',
+  });
+
+  timer.innerHTML = `${timeFormated}`;
+}
+
+showTimer();
