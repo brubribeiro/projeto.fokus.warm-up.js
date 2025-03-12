@@ -6,27 +6,42 @@ const title = document.querySelector('.app__title');
 
 const timer = document.querySelector('#timer');
 
-const duracaoFoco = 1500; 
-const duracaoDescansoCurto = 300; 
-const duracaoDescansoLongo = 900; 
-
 const focoBt = document.querySelector('.app__card-button--foco');
 const curtoBt = document.querySelector('.app__card-button--curto');
 const longoBt = document.querySelector('.app__card-button--longo');
 const iniciarBt = document.querySelector('#start-pause');
 
+const duracaoFoco = 1500; 
+const duracaoDescansoCurto = 300; 
+const duracaoDescansoLongo = 900; 
+
 focoBt.addEventListener('click', () => {
-  html.setAttribute('data-contexto', 'foco');
+  changeContexto('foco');
 });
 
 curtoBt.addEventListener('click', () => {
-  html.setAttribute('data-contexto', 'descanso-curto');
+  changeContexto('descanso-curto');
 });
 
 longoBt.addEventListener('click', () => {
-  html.setAttribute('data-contexto', 'descanso-longo');
+  changeContexto('descanso-longo');
 });
 
-startBt.addEventListener('click', () => {
+function changeContexto(contexto) {
+  html.setAttribute('data-contexto', contexto);
+  image.setAttribute('src', `/imagens/${contexto}.png`);
 
-})
+  switch (contexto) {
+    case "foco":
+      title.innerHTML = `Otimize sua produtividade,<br><strong class='app__title-strong'>mergulhe no que importa.</strong>`;
+      break;
+
+    case "descanso-curto":
+      title.innerHTML = `Que tal dar uma respirada?<br><strong class='app__title-strong'>Faça uma pausa curta!</strong>`;
+      break;
+  
+    case "descanso-longo":
+      title.innerHTML = `Hora de voltar à superfície.<br><strong class='app__title-strong'>Faça uma pausa longa.</strong>`;
+      break;
+  }
+}
